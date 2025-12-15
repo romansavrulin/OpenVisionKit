@@ -1,7 +1,7 @@
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
-[![CI](https://github.com/ultrasardine/LiveVisionKit/workflows/Continuous%20Integration/badge.svg)](https://github.com/ultrasardine/LiveVisionKit/actions)
-[![LVK Discord](https://badgen.net/discord/online-members/8azsNh6rsX)](https://discord.gg/8azsNh6rsX)
-[![Releases](https://img.shields.io/github/downloads/ultrasardine/LiveVisionKit/total)](https://github.com/ultrasardine/LiveVisionKit/releases/latest)
+[![CI](https://github.com/ultrasardine/OpenVisionKit/workflows/Continuous%20Integration/badge.svg)](https://github.com/ultrasardine/OpenVisionKit/actions)
+[![OVK Discord](https://badgen.net/discord/online-members/8azsNh6rsX)](https://discord.gg/8azsNh6rsX)
+[![Releases](https://img.shields.io/github/downloads/ultrasardine/OpenVisionKit/total)](https://github.com/ultrasardine/OpenVisionKit/releases/latest)
 ![Windows](https://img.shields.io/badge/Windows-✅-green)
 ![Linux](https://img.shields.io/badge/Linux-✅-green)
 ![macOS](https://img.shields.io/badge/macOS-🚧-yellow)
@@ -10,7 +10,7 @@
 
 ## 🚨 Community Fork Notice
 
-This is a **community-maintained fork** of the original LiveVisionKit project. The original project by Crowsinc is on indefinite pause, but this fork continues active development as a **volunteer-driven, non-commercial project** with focus on:
+**OpenVisionKit** is a community-driven, open source video processing library that evolved from the original LiveVisionKit project. When the original project by Crowsinc went on indefinite pause, the community stepped up to continue development as a **volunteer-driven, non-commercial project** with focus on:
 
 - ✅ **macOS Support** - Adding full macOS build and runtime support
 - 🔒 **Security Enhancements** - Improved security practices and vulnerability management
@@ -18,21 +18,21 @@ This is a **community-maintained fork** of the original LiveVisionKit project. T
 - 🤝 **Community Driven** - Open source governance and contribution guidelines
 - 🆓 **No Funding Required** - Pure community effort with no commercial backing
 
-**Original Project**: [Crowsinc/LiveVisionKit](https://github.com/Crowsinc/LiveVisionKit) | **Community Fork**: [ultrasardine/LiveVisionKit](https://github.com/ultrasardine/LiveVisionKit)
+**Original Project**: [Crowsinc/LiveVisionKit](https://github.com/Crowsinc/LiveVisionKit) | **OpenVisionKit**: [ultrasardine/OpenVisionKit](https://github.com/ultrasardine/OpenVisionKit)
 
-> **Note**: This fork operates entirely through volunteer contributions. We do not accept donations or have any funding mechanisms. All development is done by community members in their spare time.
+> **Note**: OpenVisionKit operates entirely through volunteer contributions. We do not accept donations or have any funding mechanisms. All development is done by community members in their spare time.
 
 ---------------
-![LiveVisionKit](/Assets/LiveVisionKit_Logo.png)
+![OpenVisionKit](/Assets/LiveVisionKit_Logo.png)
 ---------------
-LiveVisionKit (LVK) is a set of real-time video processing filters for manipulating and enhancing livestreams or recorded videos. Features include video stabilization, adaptive de-blocking, lens correction, image enhancement, and more. LiveVisionKit may be used via the OBS-Studio plugin, with more options coming in the future!
+OpenVisionKit (OVK) is a set of real-time video processing filters for manipulating and enhancing livestreams or recorded videos. Features include video stabilization, adaptive de-blocking, lens correction, image enhancement, and more. OpenVisionKit may be used via the OBS-Studio plugin, with more options coming in the future!
 
 ## 🚀 Quick Links
 
-- **📥 Download Latest Release**: [GitHub Releases](https://github.com/ultrasardine/LiveVisionKit/releases)
-- **📖 Documentation**: [Project Wiki](https://github.com/ultrasardine/LiveVisionKit/wiki)
-- **🔧 Build Instructions**: [Build Guide](https://github.com/ultrasardine/LiveVisionKit/wiki/Build-Guide)
-- **🐛 Report Issues**: [Issue Tracker](https://github.com/ultrasardine/LiveVisionKit/issues)
+- **📥 Download Latest Release**: [GitHub Releases](https://github.com/ultrasardine/OpenVisionKit/releases)
+- **📖 Documentation**: [Project Wiki](https://github.com/ultrasardine/OpenVisionKit/wiki)
+- **🔧 Build Instructions**: [Build Guide](https://github.com/ultrasardine/OpenVisionKit/wiki/Build-Guide)
+- **🐛 Report Issues**: [Issue Tracker](https://github.com/ultrasardine/OpenVisionKit/issues)
 - **💬 Community Support**: [Discord Server](https://discord.gg/8azsNh6rsX)
 - **🤝 Contributing**: [Contributing Guide](CONTRIBUTING.md)
 - **🔒 Security**: [Security Policy](SECURITY.md)
@@ -50,7 +50,7 @@ LiveVisionKit (LVK) is a set of real-time video processing filters for manipulat
 
 ## ✨ Features
 
-LiveVisionKit provides real-time video processing capabilities including:
+OpenVisionKit provides real-time video processing capabilities including:
 
 - **🎯 Video Stabilization** - Advanced stabilization algorithms for smooth footage
 - **🔧 Adaptive De-blocking** - Intelligent artifact removal and quality enhancement
@@ -70,7 +70,7 @@ LiveVisionKit provides real-time video processing capabilities including:
 
 ### macOS Support Progress
 
-We're actively working on full macOS support as a community effort! Track progress in [Issue #1](https://github.com/ultrasardine/LiveVisionKit/issues/1).
+We're actively working on full macOS support as a community effort! Track progress in [Issue #1](https://github.com/ultrasardine/OpenVisionKit/issues/1).
 
 **Current Status:**
 - ✅ Build system adaptation
@@ -85,7 +85,7 @@ We're actively working on full macOS support as a community effort! Track progre
 
 ### Pre-built Releases
 
-Download the latest community-built release for your platform from [GitHub Releases](https://github.com/ultrasardine/LiveVisionKit/releases).
+Download the latest community-built release for your platform from [GitHub Releases](https://github.com/ultrasardine/OpenVisionKit/releases).
 
 *Note: Releases are built and tested by community volunteers. Windows and Linux builds are currently available, with macOS support in development.*
 
@@ -97,7 +97,7 @@ Download the latest community-built release for your platform from [GitHub Relea
    - **Linux**: `~/.config/obs-studio/plugins/`
    - **macOS**: `~/Library/Application Support/obs-studio/plugins/`
 3. Restart OBS Studio
-4. Find LiveVisionKit filters in the "Filters" menu
+4. Find OpenVisionKit filters in the "Filters" menu
 
 ### Package Managers
 
@@ -105,13 +105,13 @@ Package manager support is planned for future releases:
 
 ```bash
 # Homebrew (macOS) - Planned
-brew install ultrasardine/tap/livevisionkit
+brew install ultrasardine/tap/openvisionkit
 
 # Chocolatey (Windows) - Planned  
-choco install livevisionkit
+choco install openvisionkit
 
 # Snap (Linux) - Planned
-snap install livevisionkit
+snap install openvisionkit
 ```
 
 *Note: Package manager distribution depends on community contributions and maintainer availability.*
@@ -131,8 +131,8 @@ snap install livevisionkit
 
 ```bash
 # Clone the repository
-git clone https://github.com/ultrasardine/LiveVisionKit.git
-cd LiveVisionKit
+git clone https://github.com/ultrasardine/OpenVisionKit.git
+cd OpenVisionKit
 
 # Install dependencies (platform-specific)
 ./Scripts/setup_deb.sh      # Linux
@@ -146,7 +146,7 @@ cmake --build . -j$(nproc)  # Linux/macOS
 cmake --build . -j           # Windows
 ```
 
-For detailed build instructions, see our community-maintained [Build Guide](https://github.com/ultrasardine/LiveVisionKit/wiki/Build-Guide).
+For detailed build instructions, see our community-maintained [Build Guide](https://github.com/ultrasardine/OpenVisionKit/wiki/Build-Guide).
 
 ## 🎯 Usage
 
@@ -155,22 +155,22 @@ For detailed build instructions, see our community-maintained [Build Guide](http
 1. Install the plugin (see [Installation](#installation))
 2. In OBS Studio, right-click on a source
 3. Select "Filters" → "Effect Filters"
-4. Add LiveVisionKit filters (Stabilization, De-blocking, etc.)
+4. Add OpenVisionKit filters (Stabilization, De-blocking, etc.)
 5. Configure filter settings as needed
 
 ### Command Line Tool
 
 ```bash
 # Process a video file
-./livevisionkit-cli input.mp4 output.mp4 --stabilize --deblock
+./openvisionkit-cli input.mp4 output.mp4 --stabilize --deblock
 
 # Batch process multiple files
-./livevisionkit-cli *.mp4 --output-dir processed/ --stabilize
+./openvisionkit-cli *.mp4 --output-dir processed/ --stabilize
 ```
 
 ## 🎬 Demonstrations
 
-These videos showcase LiveVisionKit filters in various real-world scenarios:
+These videos showcase OpenVisionKit filters in various real-world scenarios:
 
 - **🎮 VR Stabilization**: [YouTube Demo](https://youtu.be/NfL5KXUfUko)
 - **🎥 IRL Streaming**: [YouTube Demo](https://youtu.be/se3dSCvFdXc)
@@ -185,18 +185,18 @@ We welcome contributions from the community! Here's how you can help:
 
 ### Ways to Contribute
 
-- 🐛 **Report Bugs**: Use our [issue tracker](https://github.com/ultrasardine/LiveVisionKit/issues)
+- 🐛 **Report Bugs**: Use our [issue tracker](https://github.com/ultrasardine/OpenVisionKit/issues)
 - ✨ **Suggest Features**: Submit feature requests with use cases
 - 💻 **Code Contributions**: Fix bugs, add features, improve performance
 - 📚 **Documentation**: Improve guides, add examples, fix typos
-- 🌐 **Translations**: Help translate on [Crowdin](https://crowdin.com/project/livevisionkit)
+- 🌐 **Translations**: Help translate on [Crowdin](https://crowdin.com/project/openvisionkit)
 - 🧪 **Testing**: Test on different platforms and report issues
 
 ### Getting Started
 
 1. Read our [Contributing Guide](CONTRIBUTING.md)
 2. Check the [Code of Conduct](CODE_OF_CONDUCT.md)
-3. Look for [good first issues](https://github.com/ultrasardine/LiveVisionKit/labels/good%20first%20issue)
+3. Look for [good first issues](https://github.com/ultrasardine/OpenVisionKit/labels/good%20first%20issue)
 4. Join our [Discord](https://discord.gg/8azsNh6rsX) for discussions
 
 ### Development Standards
@@ -212,13 +212,13 @@ We welcome contributions from the community! Here's how you can help:
 ### Get Support
 
 - **💬 Discord**: [Join our server](https://discord.gg/8azsNh6rsX) for real-time help
-- **📋 GitHub Issues**: [Report bugs and request features](https://github.com/ultrasardine/LiveVisionKit/issues)
-- **📖 Wiki**: [Browse documentation](https://github.com/ultrasardine/LiveVisionKit/wiki)
+- **📋 GitHub Issues**: [Report bugs and request features](https://github.com/ultrasardine/OpenVisionKit/issues)
+- **📖 Wiki**: [Browse documentation](https://github.com/ultrasardine/OpenVisionKit/wiki)
 - **📧 Email**: For security issues, see [Security Policy](SECURITY.md)
 
 ### Contributors
 
-Thanks to all volunteer contributors who help make LiveVisionKit better! 🎉
+Thanks to all volunteer contributors who help make OpenVisionKit better! 🎉
 
 This project exists entirely through community contributions. Every bug report, feature request, code contribution, and documentation improvement helps the project grow.
 
@@ -235,7 +235,7 @@ This project exists entirely through community contributions. Every bug report, 
 
 ## 📄 License
 
-LiveVisionKit is licensed under the [GNU General Public License v3.0](LICENSE).
+OpenVisionKit is licensed under the [GNU General Public License v3.0](LICENSE).
 
 ### What this means:
 
@@ -257,10 +257,10 @@ Security is important to us. If you discover a security vulnerability:
 
 ## 📊 Project Stats
 
-![GitHub stars](https://img.shields.io/github/stars/ultrasardine/LiveVisionKit?style=social)
-![GitHub forks](https://img.shields.io/github/forks/ultrasardine/LiveVisionKit?style=social)
-![GitHub issues](https://img.shields.io/github/issues/ultrasardine/LiveVisionKit)
-![GitHub pull requests](https://img.shields.io/github/issues-pr/ultrasardine/LiveVisionKit)
+![GitHub stars](https://img.shields.io/github/stars/ultrasardine/OpenVisionKit?style=social)
+![GitHub forks](https://img.shields.io/github/forks/ultrasardine/OpenVisionKit?style=social)
+![GitHub issues](https://img.shields.io/github/issues/ultrasardine/OpenVisionKit)
+![GitHub pull requests](https://img.shields.io/github/issues-pr/ultrasardine/OpenVisionKit)
 
 ---
 
@@ -269,7 +269,7 @@ Security is important to us. If you discover a security vulnerability:
 - **Original Creator**: Thanks to Crowsinc for creating LiveVisionKit and making it open source
 - **Community Contributors**: All the volunteers who contribute code, documentation, testing, and support
 - **Open Source Libraries**: OpenCV, Eigen3, Qt5, and other dependencies that make this project possible
-- **Users and Testers**: Everyone who uses LiveVisionKit and provides feedback
+- **Users and Testers**: Everyone who uses OpenVisionKit and provides feedback
 
 ---
 

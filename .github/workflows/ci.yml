@@ -28,7 +28,7 @@ jobs:
         cppcheck --enable=all --std=c++20 --error-exitcode=1 \
           --suppress=missingIncludeSystem \
           --suppress=unusedFunction \
-          LiveVisionKit/
+          OpenVisionKit/
     
     - name: Setup compilation database
       run: |
@@ -39,7 +39,7 @@ jobs:
     - name: Run clang-tidy
       run: |
         cd build
-        run-clang-tidy -p . ../LiveVisionKit/ -header-filter='.*' \
+        run-clang-tidy -p . ../OpenVisionKit/ -header-filter='.*' \
           -checks='-*,readability-*,performance-*,modernize-*,bugprone-*'
 
   # Linux Build and Test
@@ -271,7 +271,7 @@ jobs:
     - name: Check license headers
       run: |
         # Check that all source files have proper GPL v3 headers
-        find LiveVisionKit -name "*.cpp" -o -name "*.hpp" | while read file; do
+        find OpenVisionKit -name "*.cpp" -o -name "*.hpp" | while read file; do
           if ! grep -q "GNU General Public License" "$file"; then
             echo "Missing GPL header in: $file"
             exit 1

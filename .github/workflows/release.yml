@@ -61,7 +61,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         tag_name: ${{ steps.get_version.outputs.version }}
-        release_name: LiveVisionKit ${{ steps.get_version.outputs.version }}
+        release_name: OpenVisionKit ${{ steps.get_version.outputs.version }}
         body_path: release_notes.md
         draft: false
         prerelease: ${{ contains(steps.get_version.outputs.version, '-') }}
@@ -98,17 +98,17 @@ jobs:
     
     - name: Package Windows Release
       run: |
-        mkdir LiveVisionKit-Windows
+        mkdir OpenVisionKit-Windows
         # Copy binaries
-        cp build/Release/*.exe LiveVisionKit-Windows/ 2>$null || echo "No exe files"
-        cp build/Release/*.dll LiveVisionKit-Windows/ 2>$null || echo "No dll files"
+        cp build/Release/*.exe OpenVisionKit-Windows/ 2>$null || echo "No exe files"
+        cp build/Release/*.dll OpenVisionKit-Windows/ 2>$null || echo "No dll files"
         # Copy OBS plugin
-        mkdir LiveVisionKit-Windows/obs-plugins
-        cp -r build/Modules/OBS-Plugin/Release/* LiveVisionKit-Windows/obs-plugins/ 2>$null || echo "No OBS plugin"
+        mkdir OpenVisionKit-Windows/obs-plugins
+        cp -r build/Modules/OBS-Plugin/Release/* OpenVisionKit-Windows/obs-plugins/ 2>$null || echo "No OBS plugin"
         # Copy documentation
-        cp README.md LICENSE CHANGELOG.md LiveVisionKit-Windows/
+        cp README.md LICENSE CHANGELOG.md OpenVisionKit-Windows/
         # Create archive
-        Compress-Archive -Path LiveVisionKit-Windows -DestinationPath LiveVisionKit-${{ needs.create-release.outputs.version }}-Windows-x64.zip
+        Compress-Archive -Path OpenVisionKit-Windows -DestinationPath OpenVisionKit-${{ needs.create-release.outputs.version }}-Windows-x64.zip
     
     - name: Upload Windows Release
       uses: actions/upload-release-asset@v1
@@ -116,8 +116,8 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ needs.create-release.outputs.upload_url }}
-        asset_path: LiveVisionKit-${{ needs.create-release.outputs.version }}-Windows-x64.zip
-        asset_name: LiveVisionKit-${{ needs.create-release.outputs.version }}-Windows-x64.zip
+        asset_path: OpenVisionKit-${{ needs.create-release.outputs.version }}-Windows-x64.zip
+        asset_name: OpenVisionKit-${{ needs.create-release.outputs.version }}-Windows-x64.zip
         asset_content_type: application/zip
 
   # Build Linux Release
@@ -150,17 +150,17 @@ jobs:
     
     - name: Package Linux Release
       run: |
-        mkdir LiveVisionKit-Linux
+        mkdir OpenVisionKit-Linux
         # Copy binaries
-        find build -name "*.so" -exec cp {} LiveVisionKit-Linux/ \;
-        find build -executable -type f -not -name "*.so" -exec cp {} LiveVisionKit-Linux/ \;
+        find build -name "*.so" -exec cp {} OpenVisionKit-Linux/ \;
+        find build -executable -type f -not -name "*.so" -exec cp {} OpenVisionKit-Linux/ \;
         # Copy OBS plugin
-        mkdir -p LiveVisionKit-Linux/obs-plugins
-        find build/Modules/OBS-Plugin -name "*.so" -exec cp {} LiveVisionKit-Linux/obs-plugins/ \;
+        mkdir -p OpenVisionKit-Linux/obs-plugins
+        find build/Modules/OBS-Plugin -name "*.so" -exec cp {} OpenVisionKit-Linux/obs-plugins/ \;
         # Copy documentation
-        cp README.md LICENSE CHANGELOG.md LiveVisionKit-Linux/
+        cp README.md LICENSE CHANGELOG.md OpenVisionKit-Linux/
         # Create archive
-        tar -czf LiveVisionKit-${{ needs.create-release.outputs.version }}-Linux-x64.tar.gz LiveVisionKit-Linux
+        tar -czf OpenVisionKit-${{ needs.create-release.outputs.version }}-Linux-x64.tar.gz OpenVisionKit-Linux
     
     - name: Upload Linux Release
       uses: actions/upload-release-asset@v1
@@ -168,8 +168,8 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ needs.create-release.outputs.upload_url }}
-        asset_path: LiveVisionKit-${{ needs.create-release.outputs.version }}-Linux-x64.tar.gz
-        asset_name: LiveVisionKit-${{ needs.create-release.outputs.version }}-Linux-x64.tar.gz
+        asset_path: OpenVisionKit-${{ needs.create-release.outputs.version }}-Linux-x64.tar.gz
+        asset_name: OpenVisionKit-${{ needs.create-release.outputs.version }}-Linux-x64.tar.gz
         asset_content_type: application/gzip
 
   # Build macOS Release
@@ -200,17 +200,17 @@ jobs:
     
     - name: Package macOS Release
       run: |
-        mkdir LiveVisionKit-macOS
+        mkdir OpenVisionKit-macOS
         # Copy binaries
-        find build -name "*.dylib" -exec cp {} LiveVisionKit-macOS/ \;
-        find build -perm +111 -type f -not -name "*.dylib" -exec cp {} LiveVisionKit-macOS/ \;
+        find build -name "*.dylib" -exec cp {} OpenVisionKit-macOS/ \;
+        find build -perm +111 -type f -not -name "*.dylib" -exec cp {} OpenVisionKit-macOS/ \;
         # Copy OBS plugin
-        mkdir -p LiveVisionKit-macOS/obs-plugins
-        find build/Modules/OBS-Plugin -name "*.dylib" -exec cp {} LiveVisionKit-macOS/obs-plugins/ \;
+        mkdir -p OpenVisionKit-macOS/obs-plugins
+        find build/Modules/OBS-Plugin -name "*.dylib" -exec cp {} OpenVisionKit-macOS/obs-plugins/ \;
         # Copy documentation
-        cp README.md LICENSE CHANGELOG.md LiveVisionKit-macOS/
+        cp README.md LICENSE CHANGELOG.md OpenVisionKit-macOS/
         # Create archive
-        tar -czf LiveVisionKit-${{ needs.create-release.outputs.version }}-macOS-Universal.tar.gz LiveVisionKit-macOS
+        tar -czf OpenVisionKit-${{ needs.create-release.outputs.version }}-macOS-Universal.tar.gz OpenVisionKit-macOS
     
     - name: Upload macOS Release
       uses: actions/upload-release-asset@v1
@@ -218,8 +218,8 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ needs.create-release.outputs.upload_url }}
-        asset_path: LiveVisionKit-${{ needs.create-release.outputs.version }}-macOS-Universal.tar.gz
-        asset_name: LiveVisionKit-${{ needs.create-release.outputs.version }}-macOS-Universal.tar.gz
+        asset_path: OpenVisionKit-${{ needs.create-release.outputs.version }}-macOS-Universal.tar.gz
+        asset_name: OpenVisionKit-${{ needs.create-release.outputs.version }}-macOS-Universal.tar.gz
         asset_content_type: application/gzip
 
   # Update Documentation

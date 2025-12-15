@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to LiveVisionKit will be documented in this file.
+All notable changes to OpenVisionKit will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Enhanced development safety guidelines
 - Improved documentation structure
 - Updated steering documents with workflow requirements
+- **BREAKING**: Project renamed from LiveVisionKit to OpenVisionKit
 
 ### Security
 - Added security policy and vulnerability disclosure process
@@ -28,7 +29,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Project Status
 
-**Note**: LiveVisionKit is currently on indefinite pause by the original maintainers (Crowsinc). This community fork under `ultrasardine` continues development with focus on:
+**Note**: OpenVisionKit is a community-driven fork that evolved from the original LiveVisionKit project (which is on indefinite pause by Crowsinc). This community fork under `ultrasardine` continues development with focus on:
 
 - macOS platform support
 - Community-driven improvements

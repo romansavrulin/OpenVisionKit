@@ -10,11 +10,11 @@ set_property(GLOBAL PROPERTY PREDEFINED_TARGETS_FOLDER "CMakeTargets")
 
 
 # Set up project 
-project(LiveVisionKit)
-message(STATUS "\nConfiguring LiveVisionKit...")
+project(OpenVisionKit)
+message(STATUS "\nConfiguring OpenVisionKit...")
 
 # Project defines
-set(LVK_CORE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/LiveVisionKit/")
+set(LVK_CORE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/OpenVisionKit/")
 set(LVK_RELEASES_DIR "Releases")
 set(LVK_INCLUDES_DIR "Include")
 set(LVK_BINARY_DIR "Binaries")
@@ -53,7 +53,7 @@ if(UNIX)
 endif()
 
 # Load sub-modules
-add_subdirectory(LiveVisionKit)
+add_subdirectory(OpenVisionKit)
 
 if(BUILD_VIDEO_EDITOR)                                 
     message(STATUS "\nBuilding with video editor CLT...")

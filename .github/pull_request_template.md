@@ -156,4 +156,4 @@ Please verify:
 
 ---
 
-**Thank you for contributing to LiveVisionKit!** 🎉
+**Thank you for contributing to OpenVisionKit!** 🎉

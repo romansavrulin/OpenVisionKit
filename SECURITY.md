@@ -2,7 +2,7 @@
 
 ## Supported Versions
 
-LiveVisionKit is currently on indefinite pause by the original maintainers, but the community fork continues to provide security updates for supported versions.
+OpenVisionKit is a community-maintained fork that evolved from the original LiveVisionKit project. The community provides security updates for supported versions.
 
 | Version | Supported          | Status |
 | ------- | ------------------ | ------ |
@@ -12,7 +12,7 @@ LiveVisionKit is currently on indefinite pause by the original maintainers, but 
 
 ## Reporting a Vulnerability
 
-We take security vulnerabilities seriously. If you discover a security vulnerability in LiveVisionKit, please report it responsibly.
+We take security vulnerabilities seriously. If you discover a security vulnerability in OpenVisionKit, please report it responsibly.
 
 ### 🚨 For Critical Security Issues
 
@@ -20,7 +20,7 @@ We take security vulnerabilities seriously. If you discover a security vulnerabi
 
 Instead, please report security issues through one of these channels:
 
-1. **Email**: Send details to `crowsinc.dev@gmail.com` with subject line "SECURITY: LiveVisionKit Vulnerability"
+1. **Email**: Send details to `crowsinc.dev@gmail.com` with subject line "SECURITY: OpenVisionKit Vulnerability"
 2. **Discord**: Contact maintainers privately on our [Discord server](https://discord.gg/8azsNh6rsX)
 3. **GitHub Security Advisory**: Use GitHub's private vulnerability reporting feature
 
@@ -47,7 +47,7 @@ When reporting a security vulnerability, please include:
 
 ### Real-time Video Processing Risks
 
-LiveVisionKit processes video data in real-time, which presents unique security considerations:
+OpenVisionKit processes video data in real-time, which presents unique security considerations:
 
 #### Input Validation
 - **Video file parsing**: Malformed video files could cause buffer overflows
@@ -119,7 +119,7 @@ LiveVisionKit processes video data in real-time, which presents unique security 
 ### For Users
 
 1. **Keep software updated**:
-   - Use the latest version of LiveVisionKit
+   - Use the latest version of OpenVisionKit
    - Keep OBS Studio updated
    - Update graphics drivers regularly
 
@@ -157,7 +157,7 @@ Security updates will be:
 
 ## Acknowledgments
 
-We appreciate security researchers and community members who help keep LiveVisionKit secure. Contributors who report valid security vulnerabilities will be:
+We appreciate security researchers and community members who help keep OpenVisionKit secure. Contributors who report valid security vulnerabilities will be:
 
 - **Credited** in security advisories (unless they prefer anonymity)
 - **Thanked** in release notes
@@ -169,9 +169,9 @@ We appreciate security researchers and community members who help keep LiveVisio
 For security-related questions or concerns:
 
 - **Security Email**: crowsinc.dev@gmail.com
-- **Discord**: [LiveVisionKit Discord](https://discord.gg/8azsNh6rsX)
+- **Discord**: [OpenVisionKit Discord](https://discord.gg/8azsNh6rsX)
 - **GitHub**: Use private vulnerability reporting
 
 ---
 
-**Remember**: Security is everyone's responsibility. Help us keep LiveVisionKit safe for all users.
+**Remember**: Security is everyone's responsibility. Help us keep OpenVisionKit safe for all users.

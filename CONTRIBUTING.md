@@ -1,10 +1,10 @@
-# Contributing to LiveVisionKit
+# Contributing to OpenVisionKit
 
-Thank you for your interest in contributing to LiveVisionKit! This document provides guidelines and information for contributors.
+Thank you for your interest in contributing to OpenVisionKit! This document provides guidelines and information for contributors.
 
 ## 🚨 Project Status
 
-**LiveVisionKit is currently on indefinite pause** by the original maintainers. However, the project remains available for community contributions and forks under the GPL v3 license.
+**OpenVisionKit** is a community-driven fork that evolved from the original LiveVisionKit project (which is on indefinite pause). This project operates entirely through volunteer contributions under the GPL v3 license.
 
 ## 📋 Table of Contents
 
@@ -35,8 +35,8 @@ This project adheres to a [Code of Conduct](CODE_OF_CONDUCT.md). By participatin
 1. **Fork the repository** on GitHub
 2. **Clone your fork** locally:
    ```bash
-   git clone https://github.com/YOUR_USERNAME/LiveVisionKit.git
-   cd LiveVisionKit
+   git clone https://github.com/YOUR_USERNAME/OpenVisionKit.git
+   cd OpenVisionKit
    ```
 3. **Set up the development environment**:
    ```bash
@@ -83,7 +83,7 @@ We welcome various types of contributions:
 - 📚 **Documentation improvements**
 - 🧪 **Test coverage enhancements**
 - 🔧 **Build system improvements**
-- 🌐 **Translations** (via [Crowdin](https://crowdin.com/project/livevisionkit))
+- 🌐 **Translations** (via [Crowdin](https://crowdin.com/project/openvisionkit))
 
 ### Before You Start
 
@@ -130,8 +130,8 @@ We welcome various types of contributions:
    sudo apt-get install cppcheck clang-tidy
    
    # Run analysis
-   cppcheck --enable=all --std=c++20 LiveVisionKit/
-   clang-tidy LiveVisionKit/**/*.cpp
+   cppcheck --enable=all --std=c++20 OpenVisionKit/
+   clang-tidy OpenVisionKit/**/*.cpp
    ```
 3. **Check memory leaks** (Debug builds have AddressSanitizer enabled)
 4. **Update documentation** for any API changes
@@ -226,10 +226,10 @@ Contributors are recognized in:
 
 ## License
 
-By contributing to LiveVisionKit, you agree that your contributions will be licensed under the [GPL v3 License](LICENSE).
+By contributing to OpenVisionKit, you agree that your contributions will be licensed under the [GPL v3 License](LICENSE).
 
 ---
 
-**Thank you for contributing to LiveVisionKit!** 🎉
+**Thank you for contributing to OpenVisionKit!** 🎉
 
 Your contributions help make real-time video processing accessible to creators worldwide.
