@@ -10,14 +10,17 @@
 
 ## 🚨 Community Fork Notice
 
-This is a **community-maintained fork** of the original LiveVisionKit project. The original project by Crowsinc is on indefinite pause, but this fork continues active development with focus on:
+This is a **community-maintained fork** of the original LiveVisionKit project. The original project by Crowsinc is on indefinite pause, but this fork continues active development as a **volunteer-driven, non-commercial project** with focus on:
 
 - ✅ **macOS Support** - Adding full macOS build and runtime support
 - 🔒 **Security Enhancements** - Improved security practices and vulnerability management
 - 🏗️ **Modern Standards** - Updated to current C++20 and industry best practices
 - 🤝 **Community Driven** - Open source governance and contribution guidelines
+- 🆓 **No Funding Required** - Pure community effort with no commercial backing
 
 **Original Project**: [Crowsinc/LiveVisionKit](https://github.com/Crowsinc/LiveVisionKit) | **Community Fork**: [ultrasardine/LiveVisionKit](https://github.com/ultrasardine/LiveVisionKit)
+
+> **Note**: This fork operates entirely through volunteer contributions. We do not accept donations or have any funding mechanisms. All development is done by community members in their spare time.
 
 ---------------
 ![LiveVisionKit](/Assets/LiveVisionKit_Logo.png)
@@ -67,19 +70,24 @@ LiveVisionKit provides real-time video processing capabilities including:
 
 ### macOS Support Progress
 
-We're actively working on full macOS support! Track progress in [Issue #1](https://github.com/ultrasardine/LiveVisionKit/issues/1).
+We're actively working on full macOS support as a community effort! Track progress in [Issue #1](https://github.com/ultrasardine/LiveVisionKit/issues/1).
 
+**Current Status:**
 - ✅ Build system adaptation
 - 🚧 Dependency management (Homebrew)
 - 🚧 OBS plugin integration
 - 🚧 AVFoundation framework support
 - ⏳ Code signing and distribution
 
+*Progress depends on volunteer contributor availability and community testing.*
+
 ## 📦 Installation
 
 ### Pre-built Releases
 
-Download the latest release for your platform from [GitHub Releases](https://github.com/ultrasardine/LiveVisionKit/releases).
+Download the latest community-built release for your platform from [GitHub Releases](https://github.com/ultrasardine/LiveVisionKit/releases).
+
+*Note: Releases are built and tested by community volunteers. Windows and Linux builds are currently available, with macOS support in development.*
 
 ### OBS Studio Plugin
 
@@ -93,16 +101,20 @@ Download the latest release for your platform from [GitHub Releases](https://git
 
 ### Package Managers
 
+Package manager support is planned for future releases:
+
 ```bash
-# Homebrew (macOS) - Coming Soon
+# Homebrew (macOS) - Planned
 brew install ultrasardine/tap/livevisionkit
 
-# Chocolatey (Windows) - Coming Soon
+# Chocolatey (Windows) - Planned  
 choco install livevisionkit
 
-# Snap (Linux) - Coming Soon
+# Snap (Linux) - Planned
 snap install livevisionkit
 ```
+
+*Note: Package manager distribution depends on community contributions and maintainer availability.*
 
 
 ## 🏗️ Building from Source
@@ -134,7 +146,7 @@ cmake --build . -j$(nproc)  # Linux/macOS
 cmake --build . -j           # Windows
 ```
 
-For detailed build instructions, see [Build Guide](https://github.com/ultrasardine/LiveVisionKit/wiki/Build-Guide).
+For detailed build instructions, see our community-maintained [Build Guide](https://github.com/ultrasardine/LiveVisionKit/wiki/Build-Guide).
 
 ## 🎯 Usage
 
@@ -206,15 +218,20 @@ We welcome contributions from the community! Here's how you can help:
 
 ### Contributors
 
-Thanks to all contributors who help make LiveVisionKit better! 🎉
+Thanks to all volunteer contributors who help make LiveVisionKit better! 🎉
+
+This project exists entirely through community contributions. Every bug report, feature request, code contribution, and documentation improvement helps the project grow.
 
 <!-- Contributors will be automatically listed here -->
 
 ### Recognition
 
 - **🏆 Hall of Fame**: Major contributors recognized in releases
-- **🎖️ Discord Roles**: Active contributors get special roles
+- **🎖️ Discord Roles**: Active contributors get special roles  
 - **📝 Changelog**: All contributions documented in [CHANGELOG.md](CHANGELOG.md)
+- **🙏 Acknowledgment**: All contributors credited in project documentation
+
+*We believe in recognizing every contribution, no matter how small!*
 
 ## 📄 License
 
@@ -247,6 +264,17 @@ Security is important to us. If you discover a security vulnerability:
 
 ---
 
-**Made with ❤️ by the LiveVisionKit community**
+## 🙏 Acknowledgments
 
-*Empowering creators with professional-grade video processing tools*
+- **Original Creator**: Thanks to Crowsinc for creating LiveVisionKit and making it open source
+- **Community Contributors**: All the volunteers who contribute code, documentation, testing, and support
+- **Open Source Libraries**: OpenCV, Eigen3, Qt5, and other dependencies that make this project possible
+- **Users and Testers**: Everyone who uses LiveVisionKit and provides feedback
+
+---
+
+**Made with ❤️ by volunteers around the world**
+
+*A community-driven project empowering creators with professional-grade video processing tools*
+
+**No funding • No ads • No tracking • Just great open source software** 🚀
