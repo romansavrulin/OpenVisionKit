@@ -1,0 +1,272 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Release version (e.g., v1.0.0)'
+        required: true
+        type: string
+
+env:
+  BUILD_TYPE: Release
+
+jobs:
+  # Create Release
+  create-release:
+    name: Create Release
+    runs-on: ubuntu-latest
+    outputs:
+      release_id: ${{ steps.create_release.outputs.id }}
+      upload_url: ${{ steps.create_release.outputs.upload_url }}
+      version: ${{ steps.get_version.outputs.version }}
+    
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    
+    - name: Get version
+      id: get_version
+      run: |
+        if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+          VERSION="${{ github.event.inputs.version }}"
+        else
+          VERSION=${GITHUB_REF#refs/tags/}
+        fi
+        echo "version=$VERSION" >> $GITHUB_OUTPUT
+        echo "Version: $VERSION"
+    
+    - name: Generate changelog
+      id: changelog
+      run: |
+        # Extract changelog for this version
+        if [ -f CHANGELOG.md ]; then
+          # Get changelog section for this version
+          awk '/^## \[Unreleased\]/{flag=1; next} /^## \[/{flag=0} flag' CHANGELOG.md > release_notes.md
+          if [ ! -s release_notes.md ]; then
+            echo "No changelog entries found for this release" > release_notes.md
+          fi
+        else
+          echo "Automated release for ${{ steps.get_version.outputs.version }}" > release_notes.md
+        fi
+    
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ steps.get_version.outputs.version }}
+        release_name: LiveVisionKit ${{ steps.get_version.outputs.version }}
+        body_path: release_notes.md
+        draft: false
+        prerelease: ${{ contains(steps.get_version.outputs.version, '-') }}
+
+  # Build Windows Release
+  build-windows:
+    name: Build Windows Release
+    runs-on: windows-latest
+    needs: create-release
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup MSVC
+      uses: microsoft/setup-msbuild@v1.3
+    
+    - name: Install vcpkg dependencies
+      run: |
+        vcpkg install opencv:x64-windows
+        vcpkg install eigen3:x64-windows
+        vcpkg install qt5-base:x64-windows
+    
+    - name: Configure CMake
+      run: |
+        cmake -B build -A x64 `
+          -DCMAKE_BUILD_TYPE=Release `
+          -DCMAKE_CXX_STANDARD=20 `
+          -DCMAKE_TOOLCHAIN_FILE="C:/vcpkg/scripts/buildsystems/vcpkg.cmake" `
+          -DENABLE_OBS_PLUGIN=ON `
+          -DENABLE_VIDEO_EDITOR=ON
+    
+    - name: Build
+      run: cmake --build build --config Release -j
+    
+    - name: Package Windows Release
+      run: |
+        mkdir LiveVisionKit-Windows
+        # Copy binaries
+        cp build/Release/*.exe LiveVisionKit-Windows/ 2>$null || echo "No exe files"
+        cp build/Release/*.dll LiveVisionKit-Windows/ 2>$null || echo "No dll files"
+        # Copy OBS plugin
+        mkdir LiveVisionKit-Windows/obs-plugins
+        cp -r build/Modules/OBS-Plugin/Release/* LiveVisionKit-Windows/obs-plugins/ 2>$null || echo "No OBS plugin"
+        # Copy documentation
+        cp README.md LICENSE CHANGELOG.md LiveVisionKit-Windows/
+        # Create archive
+        Compress-Archive -Path LiveVisionKit-Windows -DestinationPath LiveVisionKit-${{ needs.create-release.outputs.version }}-Windows-x64.zip
+    
+    - name: Upload Windows Release
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ needs.create-release.outputs.upload_url }}
+        asset_path: LiveVisionKit-${{ needs.create-release.outputs.version }}-Windows-x64.zip
+        asset_name: LiveVisionKit-${{ needs.create-release.outputs.version }}-Windows-x64.zip
+        asset_content_type: application/zip
+
+  # Build Linux Release
+  build-linux:
+    name: Build Linux Release
+    runs-on: ubuntu-latest
+    needs: create-release
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y \
+          cmake build-essential \
+          libopencv-dev libeigen3-dev qtbase5-dev \
+          pkg-config
+    
+    - name: Configure CMake
+      run: |
+        cmake -B build \
+          -DCMAKE_BUILD_TYPE=Release \
+          -DCMAKE_CXX_STANDARD=20 \
+          -DENABLE_OBS_PLUGIN=ON \
+          -DENABLE_VIDEO_EDITOR=ON
+    
+    - name: Build
+      run: cmake --build build -j$(nproc)
+    
+    - name: Package Linux Release
+      run: |
+        mkdir LiveVisionKit-Linux
+        # Copy binaries
+        find build -name "*.so" -exec cp {} LiveVisionKit-Linux/ \;
+        find build -executable -type f -not -name "*.so" -exec cp {} LiveVisionKit-Linux/ \;
+        # Copy OBS plugin
+        mkdir -p LiveVisionKit-Linux/obs-plugins
+        find build/Modules/OBS-Plugin -name "*.so" -exec cp {} LiveVisionKit-Linux/obs-plugins/ \;
+        # Copy documentation
+        cp README.md LICENSE CHANGELOG.md LiveVisionKit-Linux/
+        # Create archive
+        tar -czf LiveVisionKit-${{ needs.create-release.outputs.version }}-Linux-x64.tar.gz LiveVisionKit-Linux
+    
+    - name: Upload Linux Release
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ needs.create-release.outputs.upload_url }}
+        asset_path: LiveVisionKit-${{ needs.create-release.outputs.version }}-Linux-x64.tar.gz
+        asset_name: LiveVisionKit-${{ needs.create-release.outputs.version }}-Linux-x64.tar.gz
+        asset_content_type: application/gzip
+
+  # Build macOS Release
+  build-macos:
+    name: Build macOS Release
+    runs-on: macos-latest
+    needs: create-release
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Install dependencies
+      run: |
+        brew update
+        brew install cmake opencv eigen qt5 pkg-config
+    
+    - name: Configure CMake
+      run: |
+        cmake -B build \
+          -DCMAKE_BUILD_TYPE=Release \
+          -DCMAKE_CXX_STANDARD=20 \
+          -DENABLE_OBS_PLUGIN=ON \
+          -DENABLE_VIDEO_EDITOR=ON \
+          -DQt5_DIR=$(brew --prefix qt5)/lib/cmake/Qt5
+    
+    - name: Build
+      run: cmake --build build -j$(sysctl -n hw.ncpu)
+    
+    - name: Package macOS Release
+      run: |
+        mkdir LiveVisionKit-macOS
+        # Copy binaries
+        find build -name "*.dylib" -exec cp {} LiveVisionKit-macOS/ \;
+        find build -perm +111 -type f -not -name "*.dylib" -exec cp {} LiveVisionKit-macOS/ \;
+        # Copy OBS plugin
+        mkdir -p LiveVisionKit-macOS/obs-plugins
+        find build/Modules/OBS-Plugin -name "*.dylib" -exec cp {} LiveVisionKit-macOS/obs-plugins/ \;
+        # Copy documentation
+        cp README.md LICENSE CHANGELOG.md LiveVisionKit-macOS/
+        # Create archive
+        tar -czf LiveVisionKit-${{ needs.create-release.outputs.version }}-macOS-Universal.tar.gz LiveVisionKit-macOS
+    
+    - name: Upload macOS Release
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ needs.create-release.outputs.upload_url }}
+        asset_path: LiveVisionKit-${{ needs.create-release.outputs.version }}-macOS-Universal.tar.gz
+        asset_name: LiveVisionKit-${{ needs.create-release.outputs.version }}-macOS-Universal.tar.gz
+        asset_content_type: application/gzip
+
+  # Update Documentation
+  update-docs:
+    name: Update Documentation
+    runs-on: ubuntu-latest
+    needs: [create-release, build-windows, build-linux, build-macos]
+    if: always() && needs.create-release.result == 'success'
+    
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        fetch-depth: 0
+    
+    - name: Update CHANGELOG.md
+      run: |
+        # Move [Unreleased] section to new version
+        VERSION="${{ needs.create-release.outputs.version }}"
+        DATE=$(date +%Y-%m-%d)
+        
+        # Create new changelog with released version
+        sed "s/## \[Unreleased\]/## \[Unreleased\]\n\n### Added\n### Changed\n### Fixed\n### Security\n\n## [$VERSION] - $DATE/" CHANGELOG.md > CHANGELOG.new
+        mv CHANGELOG.new CHANGELOG.md
+    
+    - name: Commit documentation updates
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add CHANGELOG.md
+        git commit -m "Update CHANGELOG.md for release ${{ needs.create-release.outputs.version }}" || exit 0
+        git push
+
+  # Notify Community
+  notify:
+    name: Notify Community
+    runs-on: ubuntu-latest
+    needs: [create-release, build-windows, build-linux, build-macos]
+    if: always() && needs.create-release.result == 'success'
+    
+    steps:
+    - name: Discord Notification
+      if: success()
+      run: |
+        # This would send a Discord webhook notification
+        # Webhook URL would be stored in secrets
+        echo "Release ${{ needs.create-release.outputs.version }} completed successfully!"
+        echo "Windows: ${{ needs.build-windows.result }}"
+        echo "Linux: ${{ needs.build-linux.result }}"
+        echo "macOS: ${{ needs.build-macos.result }}"

@@ -1,0 +1,14 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 💬 Discord Community
+    url: https://discord.gg/8azsNh6rsX
+    about: Join our Discord server for real-time support and discussions
+  - name: 📖 Documentation
+    url: https://github.com/ultrasardine/LiveVisionKit/wiki
+    about: Check our wiki for guides, tutorials, and documentation
+  - name: 🔒 Security Vulnerability
+    url: https://github.com/ultrasardine/LiveVisionKit/security/advisories/new
+    about: Report security vulnerabilities privately (do not create public issues)
+  - name: 💡 Feature Discussion
+    url: https://github.com/ultrasardine/LiveVisionKit/discussions
+    about: Discuss ideas and proposals with the community before creating feature requests
