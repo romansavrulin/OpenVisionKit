@@ -34,27 +34,33 @@ jobs:
           libeigen3-dev \
           qtbase5-dev qttools5-dev \
           pkg-config \
-          libopencv-contrib-dev \
+          libopencv-contrib-dev
+        
+        # Install OBS Studio development dependencies
+        sudo apt-get install -y \
           libx11-dev libgl1-mesa-dev \
           libasound2-dev libpulse-dev \
           libxcomposite-dev libxinerama-dev \
           libxss-dev libglib2.0-dev \
           libfontconfig1-dev libfreetype6-dev \
-          libxrandr-dev libxss-dev libgconf-2-4
+          libxrandr-dev libjansson-dev \
+          libcurl4-openssl-dev
         
-        # Build OBS Studio from source for development headers
+        # Build OBS Studio from source (minimal build for headers only)
         git clone --recursive --depth 1 --branch 30.0.2 https://github.com/obsproject/obs-studio.git /tmp/obs-source
-        mkdir /tmp/obs-build
-        cd /tmp/obs-build
+        cd /tmp/obs-source
+        mkdir build && cd build
         
-        cmake -DCMAKE_INSTALL_PREFIX=/usr/local \
-              -DENABLE_PLUGINS=OFF \
-              -DENABLE_UI=OFF \
-              -DENABLE_SCRIPTING=OFF \
-              -DBUILD_TESTS=OFF \
-              /tmp/obs-source
+        cmake .. \
+          -DCMAKE_INSTALL_PREFIX=/usr/local \
+          -DENABLE_PLUGINS=OFF \
+          -DENABLE_UI=OFF \
+          -DENABLE_SCRIPTING=OFF \
+          -DBUILD_TESTS=OFF \
+          -DENABLE_BROWSER=OFF \
+          -DENABLE_WEBSOCKET=OFF
         
-        make -j$(nproc)
+        make -j$(nproc) obs-frontend-api
         sudo make install
     
     # Windows dependencies
