@@ -55,9 +55,13 @@ jobs:
           cmake build-essential \
           libopencv-dev libeigen3-dev qtbase5-dev qttools5-dev \
           pkg-config \
-          libopencv-contrib-dev \
-          obs-studio-dev \
-          libobs-dev
+          libopencv-contrib-dev
+        
+        # Install OBS Studio development packages
+        # Add OBS Studio PPA for development packages
+        sudo add-apt-repository ppa:obsproject/obs-studio -y
+        sudo apt-get update
+        sudo apt-get install -y libobs-dev obs-studio
     
     - name: Setup MSVC
       if: matrix.platform == 'Windows'
