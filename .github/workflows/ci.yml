@@ -34,13 +34,28 @@ jobs:
           libeigen3-dev \
           qtbase5-dev qttools5-dev \
           pkg-config \
-          libopencv-contrib-dev
+          libopencv-contrib-dev \
+          libx11-dev libgl1-mesa-dev \
+          libasound2-dev libpulse-dev \
+          libxcomposite-dev libxinerama-dev \
+          libxss-dev libglib2.0-dev \
+          libfontconfig1-dev libfreetype6-dev \
+          libxrandr-dev libxss-dev libgconf-2-4
         
-        # Install OBS Studio development packages
-        # Add OBS Studio PPA for development packages
-        sudo add-apt-repository ppa:obsproject/obs-studio -y
-        sudo apt-get update
-        sudo apt-get install -y libobs-dev obs-studio
+        # Build OBS Studio from source for development headers
+        git clone --recursive --depth 1 --branch 30.0.2 https://github.com/obsproject/obs-studio.git /tmp/obs-source
+        mkdir /tmp/obs-build
+        cd /tmp/obs-build
+        
+        cmake -DCMAKE_INSTALL_PREFIX=/usr/local \
+              -DENABLE_PLUGINS=OFF \
+              -DENABLE_UI=OFF \
+              -DENABLE_SCRIPTING=OFF \
+              -DBUILD_TESTS=OFF \
+              /tmp/obs-source
+        
+        make -j$(nproc)
+        sudo make install
     
     # Windows dependencies
     - name: Setup MSVC
@@ -113,7 +128,25 @@ jobs:
       if: matrix.os == 'macos-latest'
       run: |
         brew update
-        brew install cmake opencv eigen qt@5 pkg-config obs-studio
+        brew install cmake opencv eigen qt@5 pkg-config
+        
+        # Install OBS Studio - use cask for the application, then build from source for dev headers
+        brew install --cask obs
+        
+        # Clone and build OBS Studio for development headers
+        git clone --recursive --depth 1 --branch 30.0.2 https://github.com/obsproject/obs-studio.git /tmp/obs-source
+        mkdir /tmp/obs-build
+        cd /tmp/obs-build
+        
+        cmake -DCMAKE_INSTALL_PREFIX=/usr/local \
+              -DENABLE_PLUGINS=OFF \
+              -DENABLE_UI=OFF \
+              -DENABLE_SCRIPTING=OFF \
+              -DBUILD_TESTS=OFF \
+              /tmp/obs-source
+        
+        make -j$(sysctl -n hw.ncpu)
+        sudo make install
     
     # Configure CMake
     - name: Configure CMake (Linux/macOS)
@@ -124,12 +157,10 @@ jobs:
         
         if [ "${{ matrix.os }}" = "macos-latest" ]; then
           QT_CMAKE_ARGS="-DQt5_DIR=$(brew --prefix qt@5)/lib/cmake/Qt5"
-          # Set OBS path for macOS
-          OBS_CMAKE_ARGS="-DOBS_BUILD_PATH=$(brew --prefix obs-studio)"
-        else
-          # Linux - OBS should be found via system packages
-          OBS_CMAKE_ARGS="-DBUILD_OBS_PLUGIN=ON"
         fi
+        
+        # Both Linux and macOS now install OBS to /usr/local
+        OBS_CMAKE_ARGS="-DOBS_BUILD_PATH=/usr/local"
         
         cmake -B build \
           -DCMAKE_BUILD_TYPE=${{ env.BUILD_TYPE }} \
