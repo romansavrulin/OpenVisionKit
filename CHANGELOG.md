@@ -8,6 +8,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- **Architecture documentation** - Comprehensive architectural overview with Mermaid diagrams showing data flow and component relationships
+
+### Improved
+- **Architecture diagram structure** - Enhanced Mermaid diagram with improved visual hierarchy, clearer component groupings, and better data flow representation
+- **Architecture diagram readability** - Simplified node labels with multi-line descriptions for better visual clarity and reduced complexity
+- **Component organization** - Restructured architecture diagram to show distinct processing layers (Input, Enhancement, Geometric, Computer Vision, GPU Acceleration, Application Interface, Configuration, Data Storage, Utility, Output)
+- **Data flow visualization** - Added clear distinction between main data flow (solid lines) and supporting connections (dotted lines) for better understanding of system architecture
 - **macOS build support** - ✅ Complete implementation with automatic dependency detection and configuration
 - **macOS OBS plugin integration** - ✅ Native bundle structure (.dylib) and compatibility layer with version detection
 - **macOS video editor support** - ✅ AVFoundation framework integration for native codec support and hardware acceleration

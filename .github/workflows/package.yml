@@ -26,7 +26,7 @@ jobs:
     needs: check-merged
     if: needs.check-merged.outputs.should_build == 'true'
     runs-on: ${{ matrix.os }}
-    timeout-minutes: 90
+    timeout-minutes: 150
     strategy:
       matrix:
         include:
@@ -55,7 +55,9 @@ jobs:
           cmake build-essential \
           libopencv-dev libeigen3-dev qtbase5-dev qttools5-dev \
           pkg-config \
-          libopencv-contrib-dev
+          libopencv-contrib-dev \
+          obs-studio-dev \
+          libobs-dev
     
     - name: Setup MSVC
       if: matrix.platform == 'Windows'
@@ -72,6 +74,17 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-vcpkg-
     
+    - name: Cache OBS Studio build
+      if: matrix.platform == 'Windows'
+      uses: actions/cache@v4
+      with:
+        path: |
+          C:/obs-studio
+          C:/obs-build
+        key: ${{ runner.os }}-obs-30.0.2
+        restore-keys: |
+          ${{ runner.os }}-obs-
+    
     - name: Install Windows dependencies
       if: matrix.platform == 'Windows'
       run: |
@@ -79,29 +92,67 @@ jobs:
         vcpkg install eigen3:x64-windows
         vcpkg install qt5-base:x64-windows
     
+    - name: Setup OBS Studio (Windows)
+      if: matrix.platform == 'Windows'
+      run: |
+        # Check if OBS Studio is already built (from cache)
+        if (Test-Path "C:\obs-studio\install\include\obs\obs.h") {
+          Write-Host "OBS Studio already built (from cache)"
+        } else {
+          Write-Host "Building OBS Studio from source..."
+          
+          # Clone OBS Studio source and build it for development headers
+          git clone --recursive --depth 1 --branch 30.0.2 https://github.com/obsproject/obs-studio.git C:\obs-source
+          
+          # Create build directory
+          mkdir C:\obs-build -Force
+          cd C:\obs-build
+          
+          # Configure OBS Studio build
+          cmake -G "Visual Studio 17 2022" -A x64 `
+            -DCMAKE_INSTALL_PREFIX="C:\obs-studio" `
+            -DENABLE_PLUGINS=OFF `
+            -DENABLE_UI=OFF `
+            -DENABLE_SCRIPTING=OFF `
+            -DBUILD_TESTS=OFF `
+            C:\obs-source
+          
+          # Build and install OBS Studio (headers and libraries only)
+          cmake --build . --config Release --target install -j
+        }
+        
+        # Set environment variable for CMake
+        echo "OBS_BUILD_PATH=C:\obs-studio" >> $env:GITHUB_ENV
+    
     - name: Install macOS dependencies
       if: matrix.platform == 'macOS'
       run: |
         brew update
-        brew install cmake opencv eigen qt5 pkg-config
+        brew install cmake opencv eigen qt@5 pkg-config obs-studio
     
     # Configure and build
     - name: Configure CMake (Linux/macOS)
       if: matrix.platform != 'Windows'
       run: |
         QT_CMAKE_ARGS=""
-        OBS_CMAKE_ARGS="-DBUILD_OBS_PLUGIN=OFF"
+        OBS_CMAKE_ARGS=""
         
         if [ "${{ matrix.platform }}" = "macOS" ]; then
           QT_CMAKE_ARGS="-DQt5_DIR=$(brew --prefix qt@5)/lib/cmake/Qt5"
+          # Set OBS path for macOS
+          OBS_CMAKE_ARGS="-DOBS_BUILD_PATH=$(brew --prefix obs-studio)"
+        else
+          # Linux - OBS should be found via system packages
+          OBS_CMAKE_ARGS="-DBUILD_OBS_PLUGIN=ON"
         fi
         
         cmake -B build \
           -DCMAKE_BUILD_TYPE=${{ env.BUILD_TYPE }} \
           -DCMAKE_CXX_STANDARD=20 \
-          $OBS_CMAKE_ARGS \
+          -DBUILD_OBS_PLUGIN=ON \
           -DBUILD_VIDEO_EDITOR=ON \
-          $QT_CMAKE_ARGS
+          $QT_CMAKE_ARGS \
+          $OBS_CMAKE_ARGS
     
     - name: Configure CMake (Windows)
       if: matrix.platform == 'Windows'
@@ -110,8 +161,9 @@ jobs:
           -DCMAKE_BUILD_TYPE=${{ env.BUILD_TYPE }} `
           -DCMAKE_CXX_STANDARD=20 `
           -DCMAKE_TOOLCHAIN_FILE="C:/vcpkg/scripts/buildsystems/vcpkg.cmake" `
-          -DBUILD_OBS_PLUGIN=OFF `
-          -DBUILD_VIDEO_EDITOR=ON
+          -DBUILD_OBS_PLUGIN=ON `
+          -DBUILD_VIDEO_EDITOR=ON `
+          -DOBS_BUILD_PATH="$env:OBS_BUILD_PATH"
     
     - name: Build
       run: cmake --build build --config ${{ env.BUILD_TYPE }} -j

@@ -88,14 +88,16 @@ We welcome various types of contributions:
 ### Before You Start
 
 1. **Check existing issues** to avoid duplicate work
-2. **Create an issue** for significant changes to discuss the approach
-3. **Follow the development safety guidelines** in `.kiro/steering/development-safety.md`
-4. **Ensure your changes align** with the project's real-time performance requirements
+2. **Review the architecture** in [Architecture Documentation](openvisionkit_architecture.md) to understand system design
+3. **Create an issue** for significant changes to discuss the approach
+4. **Follow the development safety guidelines** in `.kiro/steering/development-safety.md`
+5. **Ensure your changes align** with the project's real-time performance requirements
 
 ### Development Standards
 
 #### Code Quality Requirements
 
+- **Architecture Compliance**: Follow the modular filter-based design described in [Architecture Documentation](openvisionkit_architecture.md)
 - **Memory Safety**: Use RAII patterns, smart pointers, and proper exception handling
 - **Thread Safety**: All filter operations must be thread-safe or clearly documented
 - **Performance**: Maintain real-time constraints (<33ms per frame for 30fps)

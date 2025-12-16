@@ -2,6 +2,24 @@
 
 ## Recent Changes (December 16, 2024)
 
+### Architecture Documentation Enhancement
+
+**Change**: Significantly improved the architecture documentation (`openvisionkit_architecture.md`) with enhanced Mermaid diagram structure and visual organization
+
+**Impact**: The architecture diagram now provides clearer understanding of system components and data flow with improved visual hierarchy and better component groupings.
+
+**Technical Details**: 
+- **Enhanced Visual Structure**: Restructured diagram with distinct processing layers (Input, Enhancement, Geometric, Computer Vision, GPU Acceleration, Application Interface, Configuration, Data Storage, Utility, Output)
+- **Improved Node Descriptions**: Multi-line node labels with specific technology details (e.g., "SIFT/ORB/AKAZE", "Metal Performance Shaders", "Kalman filtering")
+- **Clearer Data Flow**: Distinguished main data flow (solid lines) from supporting connections (dotted lines)
+- **Better Component Organization**: Grouped related components into logical subsystems for easier understanding
+- **Enhanced Styling**: Added color-coded styling with stroke borders for better visual distinction between component types
+
+**Documentation Updates**:
+- **CHANGELOG.md**: Updated to reflect the enhanced architecture diagram structure and improved readability
+- **README.md**: Architecture section already references the detailed documentation appropriately
+- **CONTRIBUTING.md**: Architecture documentation reference remains current and accurate
+
 ### macOS Build Support Implementation Completion
 
 **Change**: All core macOS build support tasks have been completed and marked as "[x]" in tasks.md, with implementation status updated to "✅ COMPLETED"

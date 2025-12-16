@@ -29,6 +29,7 @@ OpenVisionKit (OVK) is a set of real-time video processing filters for manipulat
 ## 🚀 Quick Links
 
 - **📥 Download Latest Release**: [GitHub Releases](https://github.com/ultrasardine/OpenVisionKit/releases)
+- **🏗️ Architecture Overview**: [Architecture Documentation](openvisionkit_architecture.md)
 - **📖 Documentation**: [Project Wiki](https://github.com/ultrasardine/OpenVisionKit/wiki)
 - **🔧 Build Instructions**: [Build Guide](https://github.com/ultrasardine/OpenVisionKit/wiki/Build-Guide)
 - **🐛 Report Issues**: [Issue Tracker](https://github.com/ultrasardine/OpenVisionKit/issues)
@@ -38,6 +39,7 @@ OpenVisionKit (OVK) is a set of real-time video processing filters for manipulat
 ## 📋 Table of Contents
 
 - [Features](#features)
+- [Architecture](#architecture)
 - [Platform Support](#platform-support)
 - [Installation](#installation)
 - [Building from Source](#building-from-source)
@@ -57,6 +59,31 @@ OpenVisionKit provides real-time video processing capabilities including:
 - **⚡ Real-time Processing** - Optimized for live streaming (<33ms per frame)
 - **🔌 OBS Studio Integration** - Seamless plugin for popular streaming software
 - **🎬 Batch Processing** - Command-line tool for video file processing
+
+## 🏗️ Architecture
+
+OpenVisionKit follows a modular, filter-based architecture designed for real-time video processing:
+
+### Core Design Principles
+
+- **🔗 Modular Filter System** - All processing built around composable `VideoFilter` base class
+- **⚡ Performance First** - GPU acceleration with OpenCL and automatic CPU fallback
+- **🔒 Thread Safety** - Concurrent processing with proper synchronization
+- **🎯 Real-time Constraints** - Target <33ms per frame processing time
+- **🌐 Cross-platform** - Platform-agnostic core with optimized modules
+
+### Data Flow Architecture
+
+```
+Input Source → VideoFrame → Filter Chain → Enhanced VideoFrame → Output Destination
+```
+
+The system processes video through a pipeline of specialized filters:
+- **Enhancement Filters**: Deblocking, scaling, color correction
+- **Geometric Filters**: Stabilization, lens correction, mesh warping  
+- **Computer Vision**: Feature detection, frame tracking, path smoothing
+
+For detailed architectural documentation including component diagrams and data flow, see [Architecture Documentation](openvisionkit_architecture.md).
 
 ## 🖥️ Platform Support
 
