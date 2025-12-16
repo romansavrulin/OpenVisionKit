@@ -2,18 +2,19 @@
 inclusion: always
 ---
 
-# LiveVisionKit Development Safety Guidelines
+# OpenVisionKit Development Safety Guidelines
 
 ## Project Overview
 
-LiveVisionKit (LVK) is a real-time video processing library focused on computer vision filters for livestreams and recorded videos. The project is currently **on indefinite pause** but remains available for community contributions and forks.
+OpenVisionKit (OVK) is a community-driven, open source real-time video processing library that evolved from the original LiveVisionKit project. It provides professional-grade video filters for livestreaming and recorded video processing.
 
 ### Key Characteristics
 - **Language**: C++20 with OpenCV, Eigen3, and Qt5 dependencies
 - **License**: GPL v3 (copyleft - requires derivative works to be open source)
-- **Platforms**: Windows and Linux (macOS explicitly not supported)
+- **Platforms**: Windows, Linux, and macOS (in active development)
 - **Architecture**: Modular filter-based system with OBS Studio plugin integration
-- **Core Features**: Video stabilization, deblocking, scaling, format conversion
+- **Core Features**: Video stabilization, adaptive de-blocking, lens correction, image enhancement, batch processing
+- **Community Status**: Volunteer-driven development with no commercial backing
 
 ## Critical Safety Requirements
 
@@ -79,17 +80,17 @@ public:
 
 **MANDATORY CHECKS:**
 - Always validate input frame dimensions, format, and data integrity
-- Use LVK assertion macros for precondition checking
+- Use OVK assertion macros for precondition checking
 - Validate configuration parameters within acceptable ranges
 - Check for null/empty inputs before processing
 
 **ASSERTION USAGE:**
 ```cpp
 void processFrame(const VideoFrame& input, VideoFrame& output) {
-    LVK_ASSERT(!input.empty());
-    LVK_ASSERT(input.has_known_format());
-    LVK_ASSERT_RANGE(input.width, 1, 8192);
-    LVK_ASSERT_RANGE(input.height, 1, 8192);
+    OVK_ASSERT(!input.empty());
+    OVK_ASSERT(input.has_known_format());
+    OVK_ASSERT_RANGE(input.width, 1, 8192);
+    OVK_ASSERT_RANGE(input.height, 1, 8192);
     
     // ... processing logic
 }
@@ -119,7 +120,7 @@ void apply(VideoFrame&& input, VideoFrame& output, const bool profile = true) {
 - Use exceptions for unrecoverable errors (invalid input, system failures)
 - Return error codes or optional values for recoverable failures
 - Implement graceful degradation when possible
-- Log errors appropriately using LVK logging system
+- Log errors appropriately using OVK logging system
 
 **IMPLEMENTATION PATTERN:**
 ```cpp
@@ -131,12 +132,12 @@ protected:
             processFrame(std::move(input), output);
         } catch (const cv::Exception& e) {
             // OpenCV-specific error handling
-            LVK_LOG_ERROR("OpenCV error: " << e.what());
+            OVK_LOG_ERROR("OpenCV error: " << e.what());
             // Fallback: pass through input unchanged
             input.copyTo(output);
         } catch (const std::exception& e) {
             // General error handling
-            LVK_LOG_ERROR("Filter error: " << e.what());
+            OVK_LOG_ERROR("Filter error: " << e.what());
             throw; // Re-throw if cannot recover
         }
     }
@@ -182,6 +183,12 @@ endif()
 - Ensure proper library linking order
 - Handle Qt5 dependencies correctly
 - Use appropriate compiler flags for target architecture
+
+**MACOS:**
+- Use appropriate deployment target (macOS 10.15+)
+- Handle universal binary builds (x86_64 + arm64)
+- Use system frameworks (CoreFoundation, CoreVideo, Accelerate)
+- Follow Apple security guidelines (code signing, hardened runtime)
 
 ## Security Considerations
 

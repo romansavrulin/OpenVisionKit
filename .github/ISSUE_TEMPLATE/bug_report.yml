@@ -1,5 +1,5 @@
 name: 🐛 Bug Report
-description: Report a bug or issue with LiveVisionKit
+description: Report a bug or issue with OpenVisionKit
 title: "[Bug]: "
 labels: ["bug", "triage"]
 assignees: []
@@ -20,9 +20,9 @@ body:
       options:
         - label: I have searched existing issues for duplicates
           required: true
-        - label: I have read the [Contributing Guidelines](https://github.com/ultrasardine/LiveVisionKit/blob/main/CONTRIBUTING.md)
+        - label: I have read the [Contributing Guidelines](https://github.com/ultrasardine/OpenVisionKit/blob/main/CONTRIBUTING.md)
           required: true
-        - label: This is not a security vulnerability (use [Security Policy](https://github.com/ultrasardine/LiveVisionKit/blob/main/SECURITY.md) instead)
+        - label: This is not a security vulnerability (use [Security Policy](https://github.com/ultrasardine/OpenVisionKit/blob/main/SECURITY.md) instead)
           required: true
 
   - type: dropdown
@@ -49,8 +49,8 @@ body:
   - type: input
     id: version
     attributes:
-      label: LiveVisionKit Version
-      description: Which version of LiveVisionKit are you using?
+      label: OpenVisionKit Version
+      description: Which version of OpenVisionKit are you using?
       placeholder: "e.g., v1.0.0, main branch commit hash"
     validations:
       required: true
@@ -97,7 +97,7 @@ body:
       placeholder: |
         1. Open OBS Studio
         2. Add a video source
-        3. Apply LiveVisionKit Stabilization filter
+        3. Apply OpenVisionKit Stabilization filter
         4. Configure settings: ...
         5. Start streaming/recording
         6. Observe the issue
@@ -147,7 +147,7 @@ body:
       label: Submission Agreement
       description: By submitting this issue, you agree to our terms
       options:
-        - label: I agree to follow the [Code of Conduct](https://github.com/ultrasardine/LiveVisionKit/blob/main/CODE_OF_CONDUCT.md)
+        - label: I agree to follow the [Code of Conduct](https://github.com/ultrasardine/OpenVisionKit/blob/main/CODE_OF_CONDUCT.md)
           required: true
         - label: I understand this is a community-maintained project and response times may vary
           required: true

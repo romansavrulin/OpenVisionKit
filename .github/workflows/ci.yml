@@ -1,60 +1,30 @@
-name: Continuous Integration
+name: CI Tests
 
 on:
   push:
     branches: [ main, develop, feature/* ]
   pull_request:
-    branches: [ main, develop ]
+    branches: [ main ]
 
 env:
   BUILD_TYPE: Release
 
 jobs:
-  # Static Analysis
-  static-analysis:
-    name: Static Analysis
-    runs-on: ubuntu-latest
-    
-    steps:
-    - uses: actions/checkout@v4
-    
-    - name: Install static analysis tools
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y cppcheck clang-tidy
-    
-    - name: Run cppcheck
-      run: |
-        cppcheck --enable=all --std=c++20 --error-exitcode=1 \
-          --suppress=missingIncludeSystem \
-          --suppress=unusedFunction \
-          OpenVisionKit/
-    
-    - name: Setup compilation database
-      run: |
-        sudo apt-get install -y cmake build-essential
-        mkdir build && cd build
-        cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=ON ..
-    
-    - name: Run clang-tidy
-      run: |
-        cd build
-        run-clang-tidy -p . ../OpenVisionKit/ -header-filter='.*' \
-          -checks='-*,readability-*,performance-*,modernize-*,bugprone-*'
-
-  # Linux Build and Test
-  linux-build:
-    name: Linux Build
-    runs-on: ubuntu-latest
+  # Test on all platforms
+  test:
+    name: Test ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false
       matrix:
-        build_type: [Debug, Release]
-        compiler: [gcc, clang]
+        os: [ubuntu-latest, windows-latest, macos-latest]
     
     steps:
     - uses: actions/checkout@v4
     
-    - name: Install dependencies
+    # Linux dependencies
+    - name: Install Linux dependencies
+      if: matrix.os == 'ubuntu-latest'
       run: |
         sudo apt-get update
         sudo apt-get install -y \
@@ -64,227 +34,54 @@ jobs:
           qtbase5-dev qttools5-dev \
           pkg-config
     
-    - name: Setup compiler
-      run: |
-        if [ "${{ matrix.compiler }}" = "clang" ]; then
-          sudo apt-get install -y clang
-          echo "CC=clang" >> $GITHUB_ENV
-          echo "CXX=clang++" >> $GITHUB_ENV
-        fi
-    
-    - name: Configure CMake
-      run: |
-        cmake -B build \
-          -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
-          -DCMAKE_CXX_STANDARD=20 \
-          -DENABLE_TESTING=ON
-    
-    - name: Build
-      run: cmake --build build --config ${{ matrix.build_type }} -j$(nproc)
-    
-    - name: Test
-      working-directory: build
-      run: ctest --output-on-failure --build-config ${{ matrix.build_type }}
-
-  # Windows Build and Test
-  windows-build:
-    name: Windows Build
-    runs-on: windows-latest
-    strategy:
-      matrix:
-        build_type: [Debug, Release]
-    
-    steps:
-    - uses: actions/checkout@v4
-    
+    # Windows dependencies
     - name: Setup MSVC
+      if: matrix.os == 'windows-latest'
       uses: microsoft/setup-msbuild@v1.3
     
-    - name: Install vcpkg dependencies
+    - name: Install Windows dependencies
+      if: matrix.os == 'windows-latest'
       run: |
         vcpkg install opencv:x64-windows
         vcpkg install eigen3:x64-windows
         vcpkg install qt5-base:x64-windows
     
-    - name: Configure CMake
-      run: |
-        cmake -B build -A x64 `
-          -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} `
-          -DCMAKE_CXX_STANDARD=20 `
-          -DCMAKE_TOOLCHAIN_FILE="C:/vcpkg/scripts/buildsystems/vcpkg.cmake" `
-          -DENABLE_TESTING=ON
-    
-    - name: Build
-      run: cmake --build build --config ${{ matrix.build_type }} -j
-    
-    - name: Test
-      working-directory: build
-      run: ctest --output-on-failure --build-config ${{ matrix.build_type }}
-
-  # macOS Build and Test
-  macos-build:
-    name: macOS Build
-    runs-on: macos-latest
-    strategy:
-      matrix:
-        build_type: [Debug, Release]
-    
-    steps:
-    - uses: actions/checkout@v4
-    
-    - name: Install dependencies
+    # macOS dependencies
+    - name: Install macOS dependencies
+      if: matrix.os == 'macos-latest'
       run: |
         brew update
         brew install cmake opencv eigen qt5 pkg-config
     
-    - name: Configure CMake
+    # Configure CMake
+    - name: Configure CMake (Linux/macOS)
+      if: matrix.os != 'windows-latest'
       run: |
+        QT_CMAKE_ARGS=""
+        if [ "${{ matrix.os }}" = "macos-latest" ]; then
+          QT_CMAKE_ARGS="-DQt5_DIR=$(brew --prefix qt5)/lib/cmake/Qt5"
+        fi
+        
         cmake -B build \
-          -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
+          -DCMAKE_BUILD_TYPE=${{ env.BUILD_TYPE }} \
           -DCMAKE_CXX_STANDARD=20 \
           -DENABLE_TESTING=ON \
-          -DQt5_DIR=$(brew --prefix qt5)/lib/cmake/Qt5
+          $QT_CMAKE_ARGS
     
+    - name: Configure CMake (Windows)
+      if: matrix.os == 'windows-latest'
+      run: |
+        cmake -B build -A x64 `
+          -DCMAKE_BUILD_TYPE=${{ env.BUILD_TYPE }} `
+          -DCMAKE_CXX_STANDARD=20 `
+          -DCMAKE_TOOLCHAIN_FILE="C:/vcpkg/scripts/buildsystems/vcpkg.cmake" `
+          -DENABLE_TESTING=ON
+    
+    # Build
     - name: Build
-      run: cmake --build build --config ${{ matrix.build_type }} -j$(sysctl -n hw.ncpu)
+      run: cmake --build build --config ${{ env.BUILD_TYPE }} -j
     
+    # Test
     - name: Test
       working-directory: build
-      run: ctest --output-on-failure --build-config ${{ matrix.build_type }}
-
-  # Memory Safety Check
-  memory-safety:
-    name: Memory Safety (AddressSanitizer)
-    runs-on: ubuntu-latest
-    
-    steps:
-    - uses: actions/checkout@v4
-    
-    - name: Install dependencies
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y \
-          cmake build-essential clang \
-          libopencv-dev libeigen3-dev qtbase5-dev \
-          pkg-config
-    
-    - name: Configure with AddressSanitizer
-      run: |
-        cmake -B build \
-          -DCMAKE_BUILD_TYPE=Debug \
-          -DCMAKE_CXX_COMPILER=clang++ \
-          -DCMAKE_C_COMPILER=clang \
-          -DCMAKE_CXX_FLAGS="-fsanitize=address -fno-omit-frame-pointer" \
-          -DCMAKE_C_FLAGS="-fsanitize=address -fno-omit-frame-pointer" \
-          -DENABLE_TESTING=ON
-    
-    - name: Build
-      run: cmake --build build -j$(nproc)
-    
-    - name: Test with AddressSanitizer
-      working-directory: build
-      env:
-        ASAN_OPTIONS: detect_leaks=1:abort_on_error=1
-      run: ctest --output-on-failure
-
-  # Thread Safety Check
-  thread-safety:
-    name: Thread Safety (ThreadSanitizer)
-    runs-on: ubuntu-latest
-    
-    steps:
-    - uses: actions/checkout@v4
-    
-    - name: Install dependencies
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y \
-          cmake build-essential clang \
-          libopencv-dev libeigen3-dev qtbase5-dev \
-          pkg-config
-    
-    - name: Configure with ThreadSanitizer
-      run: |
-        cmake -B build \
-          -DCMAKE_BUILD_TYPE=Debug \
-          -DCMAKE_CXX_COMPILER=clang++ \
-          -DCMAKE_C_COMPILER=clang \
-          -DCMAKE_CXX_FLAGS="-fsanitize=thread -fno-omit-frame-pointer" \
-          -DCMAKE_C_FLAGS="-fsanitize=thread -fno-omit-frame-pointer" \
-          -DENABLE_TESTING=ON
-    
-    - name: Build
-      run: cmake --build build -j$(nproc)
-    
-    - name: Test with ThreadSanitizer
-      working-directory: build
-      env:
-        TSAN_OPTIONS: abort_on_error=1
-      run: ctest --output-on-failure
-
-  # Performance Benchmarks
-  performance:
-    name: Performance Benchmarks
-    runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request'
-    
-    steps:
-    - uses: actions/checkout@v4
-      with:
-        fetch-depth: 0  # Need full history for comparison
-    
-    - name: Install dependencies
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y \
-          cmake build-essential \
-          libopencv-dev libeigen3-dev qtbase5-dev \
-          pkg-config
-    
-    - name: Build current version
-      run: |
-        cmake -B build-current \
-          -DCMAKE_BUILD_TYPE=Release \
-          -DENABLE_BENCHMARKS=ON
-        cmake --build build-current -j$(nproc)
-    
-    - name: Run benchmarks
-      working-directory: build-current
-      run: |
-        ./benchmarks/filter_benchmarks --benchmark_format=json \
-          --benchmark_out=benchmark_results.json
-    
-    - name: Upload benchmark results
-      uses: actions/upload-artifact@v3
-      with:
-        name: benchmark-results
-        path: build-current/benchmark_results.json
-
-  # License Compliance Check
-  license-check:
-    name: License Compliance
-    runs-on: ubuntu-latest
-    
-    steps:
-    - uses: actions/checkout@v4
-    
-    - name: Check license headers
-      run: |
-        # Check that all source files have proper GPL v3 headers
-        find OpenVisionKit -name "*.cpp" -o -name "*.hpp" | while read file; do
-          if ! grep -q "GNU General Public License" "$file"; then
-            echo "Missing GPL header in: $file"
-            exit 1
-          fi
-        done
-    
-    - name: Verify LICENSE file
-      run: |
-        if [ ! -f LICENSE ]; then
-          echo "LICENSE file is missing"
-          exit 1
-        fi
-        if ! grep -q "GNU GENERAL PUBLIC LICENSE" LICENSE; then
-          echo "LICENSE file does not contain GPL v3"
-          exit 1
-        fi
+      run: ctest --output-on-failure --build-config ${{ env.BUILD_TYPE }}

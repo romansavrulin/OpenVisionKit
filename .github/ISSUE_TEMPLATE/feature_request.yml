@@ -1,5 +1,5 @@
 name: ✨ Feature Request
-description: Suggest a new feature or enhancement for LiveVisionKit
+description: Suggest a new feature or enhancement for OpenVisionKit
 title: "[Feature]: "
 labels: ["enhancement", "triage"]
 assignees: []
@@ -10,7 +10,7 @@ body:
       value: |
         Thanks for suggesting a new feature! Please fill out this form to help us understand your request.
         
-        **Before submitting**: Consider discussing your idea in [GitHub Discussions](https://github.com/ultrasardine/LiveVisionKit/discussions) first.
+        **Before submitting**: Consider discussing your idea in [GitHub Discussions](https://github.com/ultrasardine/OpenVisionKit/discussions) first.
 
   - type: checkboxes
     id: checklist
@@ -20,7 +20,7 @@ body:
       options:
         - label: I have searched existing issues and discussions for similar requests
           required: true
-        - label: I have read the [Contributing Guidelines](https://github.com/ultrasardine/LiveVisionKit/blob/main/CONTRIBUTING.md)
+        - label: I have read the [Contributing Guidelines](https://github.com/ultrasardine/OpenVisionKit/blob/main/CONTRIBUTING.md)
           required: true
         - label: This feature aligns with the project's goals and scope
           required: true
@@ -60,7 +60,7 @@ body:
     attributes:
       label: Feature Summary
       description: A clear and concise description of the feature you'd like to see
-      placeholder: "I would like LiveVisionKit to support..."
+      placeholder: "I would like OpenVisionKit to support..."
     validations:
       required: true
 
@@ -162,7 +162,7 @@ body:
       label: Submission Agreement
       description: By submitting this feature request, you agree to our terms
       options:
-        - label: I agree to follow the [Code of Conduct](https://github.com/ultrasardine/LiveVisionKit/blob/main/CODE_OF_CONDUCT.md)
+        - label: I agree to follow the [Code of Conduct](https://github.com/ultrasardine/OpenVisionKit/blob/main/CODE_OF_CONDUCT.md)
           required: true
         - label: I understand this is a community-maintained project and implementation depends on community contributions
           required: true

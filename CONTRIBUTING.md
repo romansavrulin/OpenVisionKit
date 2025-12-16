@@ -61,8 +61,8 @@ This project adheres to a [Code of Conduct](CODE_OF_CONDUCT.md). By participatin
 2. **Configure your IDE** with the project's coding standards
 3. **Set up pre-commit hooks** (recommended):
    ```bash
-   # Install pre-commit
-   pip install pre-commit
+   # Install pre-commit (use uv for Python package management)
+   uv pip install pre-commit
    pre-commit install
    ```
 
@@ -102,6 +102,12 @@ We welcome various types of contributions:
 - **Input Validation**: Always validate inputs and handle edge cases
 - **Error Handling**: Implement graceful degradation and proper error recovery
 
+#### Development Workflow Standards
+
+- **Python Package Management**: Always use `uv` instead of `pip` for Python dependencies
+- **Terminal Output Management**: Use temporary files for long content (commits, issue comments) instead of direct terminal output
+- **Documentation Synchronization**: Update all relevant documentation when making code changes
+
 #### Code Style
 
 - **C++20 Standards**: Follow ISO C++20 and Core Guidelines
@@ -126,8 +132,9 @@ We welcome various types of contributions:
    ```
 2. **Run static analysis**:
    ```bash
-   # Install tools if needed
+   # Install tools if needed (use uv for Python tools)
    sudo apt-get install cppcheck clang-tidy
+   uv pip install --system codespell  # For spell checking
    
    # Run analysis
    cppcheck --enable=all --std=c++20 OpenVisionKit/
@@ -210,10 +217,9 @@ Our CI pipeline includes:
 
 ## Getting Help
 
-- **Discord**: Join our [development Discord](https://discord.gg/8azsNh6rsX)
-- **Issues**: Use GitHub issues for bug reports and feature requests
-- **Discussions**: Use GitHub Discussions for general questions
-- **Wiki**: Check the [project wiki](https://github.com/Crowsinc/LiveVisionKit/wiki) for documentation
+- **GitHub Issues**: Use GitHub issues for bug reports and feature requests
+- **GitHub Discussions**: Use GitHub Discussions for general questions and community support
+- **Wiki**: Check the [project wiki](https://github.com/ultrasardine/OpenVisionKit/wiki) for documentation
 
 ## Recognition
 
@@ -221,7 +227,6 @@ Contributors are recognized in:
 
 - **CHANGELOG.md** for significant contributions
 - **README.md** contributors section
-- **Discord supporter role** for ongoing contributors
 - **Git commit history** preserves all contribution records
 
 ## License

@@ -21,8 +21,7 @@ We take security vulnerabilities seriously. If you discover a security vulnerabi
 Instead, please report security issues through one of these channels:
 
 1. **Email**: Send details to `crowsinc.dev@gmail.com` with subject line "SECURITY: OpenVisionKit Vulnerability"
-2. **Discord**: Contact maintainers privately on our [Discord server](https://discord.gg/8azsNh6rsX)
-3. **GitHub Security Advisory**: Use GitHub's private vulnerability reporting feature
+2. **GitHub Security Advisory**: Use GitHub's private vulnerability reporting feature
 
 ### 📋 What to Include
 
@@ -151,7 +150,7 @@ Security updates will be:
 3. **Documented** in security advisories
 4. **Communicated** through multiple channels:
    - GitHub Security Advisories
-   - Discord announcements
+   - GitHub Discussions announcements
    - Release notes
    - Email notifications (if available)
 
@@ -161,7 +160,7 @@ We appreciate security researchers and community members who help keep OpenVisio
 
 - **Credited** in security advisories (unless they prefer anonymity)
 - **Thanked** in release notes
-- **Recognized** in our Discord community
+- **Recognized** in our GitHub community
 - **Listed** in our security hall of fame (if they consent)
 
 ## Contact
@@ -169,8 +168,8 @@ We appreciate security researchers and community members who help keep OpenVisio
 For security-related questions or concerns:
 
 - **Security Email**: crowsinc.dev@gmail.com
-- **Discord**: [OpenVisionKit Discord](https://discord.gg/8azsNh6rsX)
 - **GitHub**: Use private vulnerability reporting
+- **GitHub Discussions**: For general security questions
 
 ---
 
