@@ -181,8 +181,17 @@ if(MACOS_BUILD)
     list(APPEND CMAKE_PREFIX_PATH "${OPENCV_INSTALL_PATH}")
     find_package(OpenCV REQUIRED)
 else()
-    # Non-macOS OpenCV detection (existing behavior)
-    find_package(OpenCV REQUIRED PATHS ${OPENCV_BUILD_PATH} NO_DEFAULT_PATH)
+    # Non-macOS OpenCV detection
+    # First try system installation
+    find_package(OpenCV QUIET)
+    
+    if(NOT OpenCV_FOUND AND OPENCV_BUILD_PATH AND EXISTS "${OPENCV_BUILD_PATH}")
+        # Fall back to custom build path if system installation not found
+        find_package(OpenCV REQUIRED PATHS ${OPENCV_BUILD_PATH} NO_DEFAULT_PATH)
+    elseif(NOT OpenCV_FOUND)
+        # If neither system nor custom path works, try without path restrictions
+        find_package(OpenCV REQUIRED)
+    endif()
 endif()
 
 if(OpenCV_FOUND)

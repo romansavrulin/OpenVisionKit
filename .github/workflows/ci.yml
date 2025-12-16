@@ -14,6 +14,7 @@ jobs:
   test:
     name: Test ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
+    timeout-minutes: 60
     strategy:
       fail-fast: false
       matrix:
@@ -32,17 +33,29 @@ jobs:
           libopencv-dev \
           libeigen3-dev \
           qtbase5-dev qttools5-dev \
-          pkg-config
+          pkg-config \
+          libopencv-contrib-dev
     
     # Windows dependencies
     - name: Setup MSVC
       if: matrix.os == 'windows-latest'
       uses: microsoft/setup-msbuild@v1.3
     
+    - name: Cache vcpkg
+      if: matrix.os == 'windows-latest'
+      uses: actions/cache@v4
+      with:
+        path: |
+          C:/vcpkg/installed
+          C:/vcpkg/packages
+        key: ${{ runner.os }}-vcpkg-${{ hashFiles('**/vcpkg.json') }}
+        restore-keys: |
+          ${{ runner.os }}-vcpkg-
+    
     - name: Install Windows dependencies
       if: matrix.os == 'windows-latest'
       run: |
-        vcpkg install opencv:x64-windows
+        vcpkg install opencv[core,imgproc,imgcodecs,highgui,calib3d,features2d,video,videoio]:x64-windows
         vcpkg install eigen3:x64-windows
         vcpkg install qt5-base:x64-windows
     
@@ -58,15 +71,18 @@ jobs:
       if: matrix.os != 'windows-latest'
       run: |
         QT_CMAKE_ARGS=""
+        OBS_CMAKE_ARGS="-DBUILD_OBS_PLUGIN=OFF"
+        
         if [ "${{ matrix.os }}" = "macos-latest" ]; then
-          QT_CMAKE_ARGS="-DQt5_DIR=$(brew --prefix qt5)/lib/cmake/Qt5"
+          QT_CMAKE_ARGS="-DQt5_DIR=$(brew --prefix qt@5)/lib/cmake/Qt5"
         fi
         
         cmake -B build \
           -DCMAKE_BUILD_TYPE=${{ env.BUILD_TYPE }} \
           -DCMAKE_CXX_STANDARD=20 \
           -DENABLE_TESTING=ON \
-          $QT_CMAKE_ARGS
+          $QT_CMAKE_ARGS \
+          $OBS_CMAKE_ARGS
     
     - name: Configure CMake (Windows)
       if: matrix.os == 'windows-latest'
@@ -75,7 +91,8 @@ jobs:
           -DCMAKE_BUILD_TYPE=${{ env.BUILD_TYPE }} `
           -DCMAKE_CXX_STANDARD=20 `
           -DCMAKE_TOOLCHAIN_FILE="C:/vcpkg/scripts/buildsystems/vcpkg.cmake" `
-          -DENABLE_TESTING=ON
+          -DENABLE_TESTING=ON `
+          -DBUILD_OBS_PLUGIN=OFF
     
     # Build
     - name: Build
