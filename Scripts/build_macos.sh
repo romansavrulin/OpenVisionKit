@@ -12,7 +12,7 @@ PROJECT_ROOT="$(cd -- "$SCRIPT_DIR/.." &> /dev/null && pwd)"
 # Default configuration values
 config="Release"
 architecture="universal"  # x86_64, arm64, or universal
-macos_version="10.15"
+macos_version="13.0"
 build_plugin=false
 build_editor=false
 install_plugin=false
@@ -867,16 +867,53 @@ create_dmg_package() {
     # Remove existing DMG file
     rm -f "$final_dmg"
     
-    # Create a staging directory with Applications symlink
+    # Create a staging directory
     local staging_dir="${output_path}/.dmg_staging"
     rm -rf "$staging_dir"
     mkdir -p "$staging_dir"
     
-    # Copy bundle and create Applications symlink in staging
-    cp -R "$bundle_path" "$staging_dir/"
-    ln -sf /Applications "$staging_dir/Applications"
+    # For OBS plugin builds, create a plugin-specific DMG
+    if [ "$build_plugin" = "true" ]; then
+        log_info "Creating OBS Plugin installer DMG..."
+        
+        # Find and copy the .plugin bundle
+        local plugin_bundle=$(find "${PROJECT_ROOT}/build/Install" -name "*.plugin" -type d 2>/dev/null | head -1)
+        if [ -n "$plugin_bundle" ]; then
+            cp -R "$plugin_bundle" "$staging_dir/"
+            log_verbose "Copied plugin bundle: $(basename "$plugin_bundle")"
+        fi
+        
+        # Create OBS plugins folder symlink
+        local obs_plugins_path="$HOME/Library/Application Support/obs-studio/plugins"
+        mkdir -p "$obs_plugins_path"  # Ensure it exists
+        ln -sf "$obs_plugins_path" "$staging_dir/OBS Plugins Folder"
+        
+        # Create README for installation
+        cat > "$staging_dir/README - How to Install.txt" << 'INSTALL_EOF'
+OpenVisionKit OBS Plugin Installation
+=====================================
+
+To install the plugin:
+
+1. Drag "lvk-obs.plugin" to "OBS Plugins Folder"
+2. Restart OBS Studio
+3. The plugin will appear in your Filters list
+
+Manual Installation Path:
+~/Library/Application Support/obs-studio/plugins/
+
+To uninstall:
+Delete lvk-obs.plugin from the OBS Plugins Folder
+
+INSTALL_EOF
+        log_verbose "Created installation README"
+    else
+        # For non-plugin builds, include the app bundle
+        cp -R "$bundle_path" "$staging_dir/"
+        ln -sf /Applications "$staging_dir/Applications"
+    fi
     
-    # Create compressed DMG directly (simpler, more reliable)
+    # Create compressed DMG directly
     hdiutil create -srcfolder "$staging_dir" -volname "$package_name" \
             -fs HFS+ -format UDZO -imagekey zlib-level=9 "$final_dmg"
     

@@ -34,6 +34,8 @@ target_include_directories(
 )    
 
 # Link all dependencies
+# NOTE: opencv_highgui is NOT linked here - it's only needed by VideoEditor
+# and it brings in Qt5 which conflicts with OBS's Qt6
 target_link_libraries(
     ${PROJECT_NAME} 
     Threads::Threads
@@ -41,34 +43,11 @@ target_link_libraries(
     opencv_video
     opencv_imgproc
     opencv_calib3d
-    opencv_highgui
     opencv_features2d
     Eigen3::Eigen
 )
 
-if(UNIX AND NOT MACOS_BUILD)
-# Required by opencv_highgui on Linux
-target_link_libraries(
-    ${PROJECT_NAME}
-    Qt5::Core
-    Qt5::Gui
-    Qt5::Widgets
-    Qt5::Test
-    Qt5::Concurrent
-    Qt5::OpenGL
-)
-elseif(MACOS_BUILD)
-# Required by opencv_highgui and LVK on macOS
-target_link_libraries(
-    ${PROJECT_NAME}
-    Qt5::Core
-    Qt5::Gui
-    Qt5::Widgets
-    Qt5::Test
-    Qt5::Concurrent
-    Qt5::OpenGL
-)
-
+if(MACOS_BUILD)
 # Link macOS-specific frameworks
 if(COREFOUNDATION_FRAMEWORK)
     target_link_libraries(${PROJECT_NAME} ${COREFOUNDATION_FRAMEWORK})

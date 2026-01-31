@@ -14,7 +14,8 @@ set_property(TARGET ${PROJECT_NAME} PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded
 # Configure macOS-specific library properties
 if(APPLE)
     set_target_properties(${PROJECT_NAME} PROPERTIES
-        SUFFIX ".dylib"
+        PREFIX ""
+        SUFFIX ""
         BUNDLE FALSE
         MACOSX_RPATH TRUE
         INSTALL_RPATH "@loader_path"
