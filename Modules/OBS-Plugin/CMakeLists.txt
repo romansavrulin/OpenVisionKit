@@ -509,8 +509,11 @@ target_sources(
         Sources/Tools/IngestTestSource.cpp
 
         Data/effects/ffx_a.h
+        Data/effects/ffx_a_mod.h
         Data/effects/ffx_cas.h
+        Data/effects/ffx_cas_mod.h
         Data/effects/ffx_fsr1.h
+        Data/effects/ffx_fsr1_mod.h
         Effects/CASEffect.cpp
         Effects/CASEffect.hpp
         Effects/DefaultEffect.cpp
