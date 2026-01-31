@@ -75,6 +75,7 @@ if(APPLE)
     find_library(VIDEOTOOLBOX_FRAMEWORK VideoToolbox)
     find_library(COREFOUNDATION_FRAMEWORK CoreFoundation)
     find_library(FOUNDATION_FRAMEWORK Foundation)
+    find_library(COREMEDIA_FRAMEWORK CoreMedia)
     
     if(AVFOUNDATION_FRAMEWORK)
         target_link_libraries(${PROJECT_NAME} ${AVFOUNDATION_FRAMEWORK})
@@ -92,6 +93,11 @@ if(APPLE)
     
     if(FOUNDATION_FRAMEWORK)
         target_link_libraries(${PROJECT_NAME} ${FOUNDATION_FRAMEWORK})
+    endif()
+    
+    if(COREMEDIA_FRAMEWORK)
+        target_link_libraries(${PROJECT_NAME} ${COREMEDIA_FRAMEWORK})
+        message(STATUS "${MI}Linked CoreMedia framework for video editor")
     endif()
     
     # Configure macOS security features

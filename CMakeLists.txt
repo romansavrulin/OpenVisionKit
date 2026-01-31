@@ -31,7 +31,11 @@ set_property(GLOBAL PROPERTY PREDEFINED_TARGETS_FOLDER "CMakeTargets")
 
 
 # Set up project 
-project(OpenVisionKit)
+if(APPLE)
+    project(OpenVisionKit LANGUAGES C CXX OBJC OBJCXX)
+else()
+    project(OpenVisionKit LANGUAGES C CXX)
+endif()
 message(STATUS "\nConfiguring OpenVisionKit...")
 
 # Project defines

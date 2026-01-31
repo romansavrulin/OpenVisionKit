@@ -115,11 +115,10 @@ target_sources(
 
         Functions/OpenCL/Kernels.hpp
         Functions/OpenCL/Kernels.cpp
-        # Temporarily disable macOS-specific files for checkpoint
-        # Functions/OpenCL/MacOSAcceleration.hpp
-        # Functions/OpenCL/MacOSAcceleration.mm
-        # Functions/OpenCL/CoreVideoIntegration.hpp
-        # Functions/OpenCL/CoreVideoIntegration.mm
+        $<$<PLATFORM_ID:Darwin>:Functions/OpenCL/MacOSAcceleration.hpp>
+        $<$<PLATFORM_ID:Darwin>:Functions/OpenCL/MacOSAcceleration.mm>
+        $<$<PLATFORM_ID:Darwin>:Functions/OpenCL/CoreVideoIntegration.hpp>
+        $<$<PLATFORM_ID:Darwin>:Functions/OpenCL/CoreVideoIntegration.mm>
         Functions/Extensions.hpp
         Functions/Extensions.cpp
         Functions/Container.hpp
